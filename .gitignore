@@ -191,3 +191,76 @@ customers.push({ name: "Alice Lee", email: "alice.lee@email.com", purchaseAmount
 // Log the entire customer list
 
 console.log(customers);
+
+using System;
+using static System.Console;
+
+class SalesTaxDemo
+{
+    static void Main()
+    {
+        Sale[] sales = new Sale[10];
+
+        for (int i = 0; i < sales.Length; i++)
+        {
+            Write($"Enter inventory number #{i + 1} >> ");
+            string inventoryNumber = ReadLine();
+
+            Write($"Enter amount of sale >> ");
+            double amount = Convert.ToDouble(ReadLine());
+
+            sales[i] = new Sale(inventoryNumber, amount);
+        }
+
+        for (int i = 0; i < sales.Length; i++)
+        {
+            WriteLine($"Sale # {i + 1} Amount: {sales[i].InventoryNumber} Sale ${sales[i].Amount:F2} Tax is ${sales[i].Tax:F2}");
+        }
+    }
+}
+
+class Sale
+{
+    private string inventoryNumber;
+    private double amount;
+    private double tax;
+
+    public string InventoryNumber
+    {
+        get { return inventoryNumber; }
+        set { inventoryNumber = value; }
+    }
+
+    public double Amount
+    {
+        get { return amount; }
+        set
+        {
+            amount = value;
+            CalculateTax();
+        }
+    }
+
+    public double Tax
+    {
+        get { return tax; }
+    }
+
+    public Sale(string inventoryNumber, double amount)
+    {
+        InventoryNumber = inventoryNumber;
+        Amount = amount;
+    }
+
+    private void CalculateTax()
+    {
+        if (amount <= 100)
+        {
+            tax = amount * 0.08;
+        }
+        else
+        {
+            tax = 100 * 0.08 + (amount - 100) * 0.06;
+        }
+    }
+}
