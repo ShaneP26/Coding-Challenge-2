@@ -151,3 +151,21 @@ console.log("Updated product list:", products);
     </div>
 </body>
 </html>
+
+// Creating an employee object with initial properties
+let employee = {
+  name: "John Doe", 
+  age: 30, 
+  department: "Marketing",
+  isActive: true 
+};
+
+// Update the department property
+employee.department = "Sales"; 
+
+// Add a new property "position"
+employee.position = "Account Manager"; 
+
+// Log the updated employee object to the console
+console.log(employee); 
+// Output: { name: "John Doe", age: 30, department: "Sales", isActive: true, position: "Account Manager" }
