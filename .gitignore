@@ -8,3 +8,146 @@ products.pop();
 
 // Log the updated product list
 console.log("Updated product list:", products); 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Scores</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            border: 2px solid #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        "use strict";
+
+        // Arrays to store scores and display strings
+        const scoresArray = [];
+        const scoresStringArray = [];
+
+        // Function to display scores
+        const displayScores = (scores, scoresString) => {
+            // Calculate average score
+            const averageScore = scores.length > 0 ? scores.reduce((sum, score) => sum + score, 0) / scores.length : 0;
+
+            // Display average score
+            $("#average_score").val(averageScore.toFixed(2));
+
+            // Display student scores
+            const displayText = scoresString.join("\n");
+            $("#scores").val(displayText);
+        };
+
+        // Ready event handler
+        $(document).ready(() => {
+            // Add Student Score button click handler
+            $("#add_button").click(() => {
+                // Get input values
+                const firstName = $("#first_name").val();
+                const lastName = $("#last_name").val();
+                const score = parseFloat($("#score").val());
+
+                // Validate input
+                if (firstName && lastName && !isNaN(score)) {
+                    // Save score in the first array
+                    scoresArray.push(score);
+
+                    // Save name and score string in the second array
+                    const scoreString = `${lastName}, ${firstName}: ${score.toFixed(2)}`;
+                    scoresStringArray.push(scoreString);
+
+                    // Redisplay the updated data
+                    displayScores(scoresArray, scoresStringArray);
+
+                    // Clear the add form
+                    $("#first_name").val("");
+                    $("#last_name").val("");
+                    $("#score").val("");
+                    $("#first_name").focus();
+                }
+            });
+
+            // Clear Student Scores button click handler
+            $("#clear_button").click(() => {
+                // Clear both arrays
+                scoresArray.length = 0;
+                scoresStringArray.length = 0;
+
+                // Clear the display area
+                $("#average_score").val("");
+                $("#scores").val("");
+
+                // Set focus on the first name field
+                $("#first_name").focus();
+            });
+
+            // Sort By Last Name button click handler
+            $("#sort_button").click(() => {
+                // Sort students by last name and then by first name
+                scoresStringArray.sort((a, b) => {
+                    const [lastNameA, firstNameA] = a.split(",").map(item => item.trim());
+                    const [lastNameB, firstNameB] = b.split(",").map(item => item.trim());
+
+                    // Compare last names
+                    if (lastNameA !== lastNameB) {
+                        return lastNameA.localeCompare(lastNameB);
+                    } else {
+                        // If last names are the same, compare first names
+                        return firstNameA.localeCompare(firstNameB);
+                    }
+                });
+
+                // Redisplay the sorted data
+                displayScores(scoresArray, scoresStringArray);
+            });
+
+            // Set focus on the first name field
+            $("#first_name").focus();
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <h2>Student Scores</h2>
+        <form>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name"><br>
+            
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name"><br>
+            
+            <label for="score">Score:</label>
+            <input type="text" id="score"><br>
+            
+            <button type="button" id="add_button">Add Student Score</button>
+        </form>
+
+        <div>
+            <h3>Student Scores</h3>
+            <textarea id="scores" rows="10" cols="30" readonly></textarea>
+
+            <p>Average Score: <input type="text" id="average_score" readonly></p>
+
+            <button type="button" id="clear_button">Clear Student Scores</button><br>
+            <button type="button" id="sort_button">Sort By Last Name</button>
+        </div>
+    </div>
+</body>
+</html>
